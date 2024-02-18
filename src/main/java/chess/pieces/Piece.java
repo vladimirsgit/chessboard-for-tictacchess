@@ -29,7 +29,7 @@ public abstract class Piece {
     }
     public abstract void validateMove(Position from, Position to, Game game);
     public final void move(Position from, Position to, Game game){
-
+        if (game.getPieceAtPosition(to) instanceof King) return; //nothing can capture the king
         try{
             validateMove(from, to, game);
             game.setEnPassantCandidate(null);

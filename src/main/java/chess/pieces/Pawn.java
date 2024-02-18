@@ -56,7 +56,6 @@ public class Pawn extends Piece{
     private boolean isCapture(Position from, Position to, Game game) {
         return PawnHelper.isDiagonalMove(from, to) && !game.isSquareEmpty(to)
                 && Piece.isDifferentColorForCapturing(game.getPieceAtPosition(from), game.getPieceAtPosition(to));
-
     }
 
     private boolean isEnPassant(Position from, Position to, Game game){

@@ -4,7 +4,6 @@ import chess.Game;
 import chess.Position;
 import chess.exceptions.InvalidMoveException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import utils.LinearPieceTestUtils;
@@ -74,6 +73,7 @@ public class RookTest {
         InvalidMoveException thrownException = assertThrows(InvalidMoveException.class, () -> {
             rook.validateMove(from, to, game);
         });
+        assertEquals(game.getPieceAtPosition(from), rook);
     }
 
 }
