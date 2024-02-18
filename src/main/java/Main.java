@@ -1,5 +1,6 @@
 import chess.Game;
 import chess.Position;
+import chess.pieces.Pawn;
 import chess.pieces.Piece;
 
 public class Main {
@@ -9,8 +10,8 @@ public class Main {
 
         game.printGameBoard();
 
-        Position from = new Position(7, 2);
-        Position to = new Position(5, 2);
+        Position from = new Position(7, 1);
+        Position to = new Position(5, 1);
 
         Piece piece = game.getPieceAtPosition(from);
 
@@ -18,6 +19,13 @@ public class Main {
 
         game.printGameBoard();
 
+
+        from = new Position(5, 1);
+        to = new Position(4, 1);
+        piece = game.getPieceAtPosition(from);
+        piece.move(from, to, game);
+        
+        game.printGameBoard();
 
 
     }

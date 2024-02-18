@@ -68,7 +68,7 @@ public class PawnTest {
     @Test
     public void testOutOfBoardBounds(){
         Position from = new Position(2, 1);
-        Position to = new Position(0, 1);
+        Position to = new Position(-1, 1);
         Piece pawn = game.getPieceAtPosition(from);
 
         OutOfBoardBoundsException thrownException = assertThrows(OutOfBoardBoundsException.class, () -> {

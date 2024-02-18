@@ -3,9 +3,10 @@ package chess;
 import chess.pieces.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
-    private Piece[][] gameBoard = new Piece[10][10];
+    private Piece[][] gameBoard = new Piece[9][9];
     private ArrayList<FullMove> fullMoves = new ArrayList<>();
     private Piece enPassantCandidate = null;
 
@@ -23,7 +24,7 @@ public class Game {
         this.gameBoard = gameBoard;
     }
 
-    public ArrayList<FullMove> getFullMoves() {
+    public List<FullMove> getFullMoves() {
         return fullMoves;
     }
 
@@ -58,14 +59,22 @@ public class Game {
         //kings
         this.gameBoard[1][4] = new King(Piece.WHITE, "K");
         this.gameBoard[8][4] = new King(Piece.BLACK, "k");
-        //quens
+        //queens
         this.gameBoard[1][5] = new Queen(Piece.WHITE, "Q");
         this.gameBoard[8][5] = new Queen(Piece.BLACK, "q");
     }
 
     public void printGameBoard(){
-        for(int i = 8; i >= 1; i--){
-            for(int j = 1; j <= 8; j++){
+        for(int i = 9; i >= 1; i--){
+            for(int j = 0; j <= 8; j++){
+                if(i != 9 && j == 0){
+                    System.out.print(i + " ");
+                    continue;
+                }
+                if(i == 9){
+                    System.out.print(j + " ");
+                    continue;
+                }
                 Piece currPiece = this.gameBoard[i][j];
                 if(currPiece != null){
                     System.out.print(currPiece.getSymbol() + " ");

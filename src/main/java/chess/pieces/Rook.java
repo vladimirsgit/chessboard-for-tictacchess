@@ -15,20 +15,8 @@ public class Rook extends Piece{
 
     @Override
     public void validateMove(Position from, Position to, Game game) {
-        if(isNotInsideChessboard(from, to)){
-            throw new OutOfBoardBoundsException("The position/positions are out of the boards' bounds");
-        }
-        if(isVerticalOrHorizontalMove(from, to, game)){
-            return;
-        }
+        if(isNotInsideChessboard(from, to)) throw new OutOfBoardBoundsException("The position/positions are out of the boards' bounds");
+        if(LinearPieceHelper.makeVerticalOrHorizontalMoveOrCapture(from, to, game)) return;
         throw new InvalidMoveException("Invalid move.");
     }
-
-    private boolean isVerticalOrHorizontalMove(Position from, Position to, Game game){
-        return LinearPieceHelper.makeVerticalOrHorizontalMoveOrCapture(from, to, game);
-    }
-
-//    private boolean isCapture(Position from, Position to, Game game){
-//
-//    }
 }

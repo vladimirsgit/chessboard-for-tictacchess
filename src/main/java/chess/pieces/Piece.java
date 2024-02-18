@@ -28,7 +28,7 @@ public abstract class Piece {
         return this.symbol;
     }
     public abstract void validateMove(Position from, Position to, Game game);
-    public void move(Position from, Position to, Game game){
+    public final void move(Position from, Position to, Game game){
 
         try{
             validateMove(from, to, game);

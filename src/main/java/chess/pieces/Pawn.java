@@ -62,4 +62,7 @@ public class Pawn extends Piece{
     private boolean isEnPassant(Position from, Position to, Game game){
         return PawnHelper.tryForEnPassant(from, to, game);
     }
+    public void tryme(){
+
+    }
 }

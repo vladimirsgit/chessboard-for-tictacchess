@@ -24,4 +24,8 @@ public class Position {
     public void setHorizontalCoord(int horizontalCoord) {
         this.horizontalCoord = horizontalCoord;
     }
+
+    public boolean isSamePosition(Position to){
+        return to.horizontalCoord == this.horizontalCoord && to.verticalCoord == this.verticalCoord;
+    }
 }

@@ -18,7 +18,7 @@ public class LinearPieceHelper {
      * @param from The initial position.
      * @param to The wanted position.
      * @param game Current game state.
-     * @return It returns the response of the {@link LinearPieceHelper#checkFreePath(int, int, String, Position, Position, Piece, Piece, Game)} method.
+     * @return It returns the response of the {@link LinearPieceHelper#checkFreePathForVerticalAndHorizontalMove(int, int, String, Position, Position, Piece, Piece, Game)} method.
      */
     public static boolean makeVerticalOrHorizontalMoveOrCapture(Position from, Position to, Game game) {
         String direction = checkDirection(from, to);
@@ -36,7 +36,7 @@ public class LinearPieceHelper {
         Piece pieceToBeMoved = game.getPieceAtPosition(from);
         Piece pieceToBeCaptured = game.getPieceAtPosition(to);
 
-        return checkFreePath(startPos, endPos, direction, from, to, pieceToBeMoved, pieceToBeCaptured, game);
+        return checkFreePathForVerticalAndHorizontalMove(startPos, endPos, direction, to, pieceToBeMoved, pieceToBeCaptured, game);
     }
     /**
      * Checking if the path is obstructed.
@@ -53,29 +53,60 @@ public class LinearPieceHelper {
      * @return It returns true if it reaches the end square and it can be captured, or if it reaches the end square and it was not obstructed by other pieces.
      */
 
-    private static boolean checkFreePath(int startPos, int endPos, String direction, Position from, Position to, Piece pieceToBeMoved, Piece pieceToBeCaptured, Game game){
+    private static boolean checkFreePathForVerticalAndHorizontalMove(int startPos, int endPos, String direction, Position to, Piece pieceToBeMoved, Piece pieceToBeCaptured, Game game){
         int incrementValue = 1;
         if(startPos > endPos){
             incrementValue = -1;
         }
         for(int i = startPos; i != endPos + incrementValue; i+=incrementValue){
-            Position position;
+            Position currPos;
             if(direction.equals(VERTICAL)){
-                position = new Position(i, to.getHorizontalCoord());
+                currPos = new Position(i, to.getHorizontalCoord());
             } else {
-                position = new Position(to.getVerticalCoord(), i);
+                currPos = new Position(to.getVerticalCoord(), i);
             }
-            if(okToCapture(i, endPos, position, pieceToBeMoved, pieceToBeCaptured, game)){
-                return true;
-            }
-            if(!game.isSquareEmpty(position) && game.getPieceAtPosition(position) != pieceToBeMoved){
+            if(pieceToBeCaptured != null && currPos.isSamePosition(to) && okToCapture(currPos, pieceToBeMoved, pieceToBeCaptured, game)) return true;
+            if(!game.isSquareEmpty(currPos) && game.getPieceAtPosition(currPos) != pieceToBeMoved) return false;
+        }
+        return true;
+    }
+
+    public static boolean makeDiagonalMoveOrCapture(Position from, Position to, Game game){
+        String direction = checkDirection(from, to);
+
+        if(!direction.equals(DIAGONAL)){
+            return false;
+        }
+
+        Piece pieceToBeMoved = game.getPieceAtPosition(from);
+        Piece pieceToBeCaptured = game.getPieceAtPosition(to);
+
+        return checkFreePathForDiagonalMove(from, to, pieceToBeMoved, pieceToBeCaptured, game);
+    }
+    private static boolean checkFreePathForDiagonalMove(Position from, Position to, Piece pieceToBeMoved, Piece pieceToBeCaptured, Game game){
+        int incrementVertical = -1, incrementHorizontal = -1;
+        if(from.getVerticalCoord() < to.getVerticalCoord()){
+            incrementVertical = 1;
+        }
+        if(from.getHorizontalCoord() < to.getHorizontalCoord()){
+            incrementHorizontal = 1;
+        }
+
+        for(int verticalCoord = from.getVerticalCoord(), horizontalCoord = from.getHorizontalCoord();  verticalCoord != to.getVerticalCoord() + incrementVertical &&
+                horizontalCoord != to.getHorizontalCoord() + incrementHorizontal; verticalCoord+=incrementVertical, horizontalCoord+=incrementHorizontal){
+
+            Position currPos = new Position(verticalCoord, horizontalCoord);
+            if(pieceToBeCaptured != null && currPos.isSamePosition(to) && okToCapture(currPos, pieceToBeMoved, pieceToBeCaptured, game)) return true;
+            if(!game.isSquareEmpty(currPos) && game.getPieceAtPosition(currPos) != pieceToBeMoved){;
                 return false;
             }
         }
         return true;
     }
-    private static boolean okToCapture(int i, int endPos, Position position, Piece pieceToBeMoved, Piece pieceToBeCaptured, Game game){
-        return pieceToBeMoved != null && !game.isSquareEmpty(position) && game.getPieceAtPosition(position) == pieceToBeCaptured && i == endPos && !pieceToBeCaptured.getColor().equals(pieceToBeMoved.getColor());
+
+    private static boolean okToCapture(Position current, Piece pieceToBeMoved, Piece pieceToBeCaptured, Game game){
+        boolean isDifferentColor = !pieceToBeCaptured.getColor().equals(pieceToBeMoved.getColor());
+        return !game.isSquareEmpty(current) && game.getPieceAtPosition(current) == pieceToBeCaptured && isDifferentColor;
     }
     private static String checkDirection(Position from, Position to){
         if(Math.abs(from.getVerticalCoord() - to.getVerticalCoord()) == Math.abs(from.getHorizontalCoord() - to.getHorizontalCoord())){
