@@ -106,4 +106,11 @@ public class Game {
         this.gameBoard[to.getVerticalCoord()][to.getHorizontalCoord()] = this.gameBoard[from.getVerticalCoord()][from.getHorizontalCoord()];
         this.gameBoard[from.getVerticalCoord()][from.getHorizontalCoord()] = null;
     }
+    public void clearPawns(){
+        for(int i = 2; i <= 6; i+=2){
+            for(int j = 1; j <= 8; j++){
+                gameBoard[i][j] = null;
+            }
+        }
+    }
 }
