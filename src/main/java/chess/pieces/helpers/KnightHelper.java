@@ -2,9 +2,9 @@ package chess.pieces.helpers;
 
 import chess.Game;
 import chess.Position;
-import chess.exceptions.InvalidMoveException;
 import chess.pieces.Piece;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 public class KnightHelper {
@@ -13,9 +13,7 @@ public class KnightHelper {
         Piece pieceToBeCaptured = game.getPieceAtPosition(to);
         Piece pieceToBeMoved = game.getPieceAtPosition(from);
         if(pieceToBeCaptured == null) return true;
-        if(Objects.equals(pieceToBeCaptured.getColor(), pieceToBeMoved.getColor())) return false;
-
-        return true;
+        return !Objects.equals(pieceToBeCaptured.getColor(), pieceToBeMoved.getColor());
     }
 
 
@@ -29,6 +27,20 @@ public class KnightHelper {
         boolean isHorizontal = Math.abs(fromHorizontal - toHorizontal) == 2 && Math.abs(fromHorizontal - toVertical) == 1;
 
         return isVertical || isHorizontal;
+    }
+    public static void setKnightAttackedSquares(HashSet<Position> attackedSquares, Position piecePosition, Piece[][] gameboard){
+        int i = piecePosition.getVerticalCoord();
+        int j = piecePosition.getHorizontalCoord();
+        int[][] knightMoves = {
+                {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
+                {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
+        };
+        for(int[] position : knightMoves){
+            Position attackedPos = new Position(i + position[0], j + position[1]);
+            if(!attackedPos.isOutsideBoardBounds()){
+                attackedSquares.add(attackedPos);
+            }
+        }
     }
 
 }

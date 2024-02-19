@@ -15,7 +15,9 @@ public class Queen extends Piece{
 
     @Override
     public void validateMove(Position from, Position to, Game game) {
-        if(isNotInsideChessboard(from, to)) throw new OutOfBoardBoundsException("Outside of boards' bounds");
+        if(from.isOutsideBoardBounds() || to.isOutsideBoardBounds()){
+            throw new OutOfBoardBoundsException("The position/positions are out of the boards' bounds");
+        }
         if(LinearPieceHelper.makeDiagonalMoveOrCapture(from, to, game) || LinearPieceHelper.makeVerticalOrHorizontalMoveOrCapture(from, to, game)) return;
         throw new InvalidMoveException("Invalid move.");
     }

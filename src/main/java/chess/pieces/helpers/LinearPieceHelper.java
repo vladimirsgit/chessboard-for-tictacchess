@@ -4,6 +4,8 @@ import chess.Game;
 import chess.Position;
 import chess.pieces.Piece;
 
+import java.util.HashSet;
+
 public class LinearPieceHelper {
     public static final String DIAGONAL = "DIAGONAL";
     public static final String INVALID = "INVALID";
@@ -18,7 +20,7 @@ public class LinearPieceHelper {
      * @param from The initial position.
      * @param to The wanted position.
      * @param game Current game state.
-     * @return It returns the response of the {@link LinearPieceHelper#checkFreePathForVerticalAndHorizontalMove(int, int, String, Position, Position, Piece, Piece, Game)} method.
+     * @return It returns the response of the {@link LinearPieceHelper#checkFreePathForVerticalAndHorizontalMove(int, int, String, Position, Piece, Piece, Game)} method.
      */
     public static boolean makeVerticalOrHorizontalMoveOrCapture(Position from, Position to, Game game) {
         String direction = checkDirection(from, to);
@@ -45,7 +47,6 @@ public class LinearPieceHelper {
      * @param startPos The start position of the loop, used together with endPos to see if the path is clear.
      * @param endPos The end position of the loop, used together with startPos to see if the path is clear.
      * @param direction Information if its going to be a vertical or horizontal path.
-     * @param from The initial square.
      * @param to The wanted square.
      * @param pieceToBeMoved The piece wanting to be moved.
      * @param pieceToBeCaptured The possible capturable piece (can be null if the square is empty)
@@ -65,7 +66,7 @@ public class LinearPieceHelper {
             } else {
                 currPos = new Position(to.getVerticalCoord(), i);
             }
-            if(pieceToBeCaptured != null && currPos.isSamePosition(to) && okToCapture(currPos, pieceToBeMoved, pieceToBeCaptured, game)) return true;
+            if(pieceToBeCaptured != null && currPos.equals(to) && okToCapture(currPos, pieceToBeMoved, pieceToBeCaptured, game)) return true;
             if(!game.isSquareEmpty(currPos) && game.getPieceAtPosition(currPos) != pieceToBeMoved) return false;
         }
         return true;
@@ -73,11 +74,9 @@ public class LinearPieceHelper {
 
     public static boolean makeDiagonalMoveOrCapture(Position from, Position to, Game game){
         String direction = checkDirection(from, to);
-
         if(!direction.equals(DIAGONAL)){
             return false;
         }
-
         Piece pieceToBeMoved = game.getPieceAtPosition(from);
         Piece pieceToBeCaptured = game.getPieceAtPosition(to);
 
@@ -96,7 +95,7 @@ public class LinearPieceHelper {
                 horizontalCoord != to.getHorizontalCoord() + incrementHorizontal; verticalCoord+=incrementVertical, horizontalCoord+=incrementHorizontal){
 
             Position currPos = new Position(verticalCoord, horizontalCoord);
-            if(pieceToBeCaptured != null && currPos.isSamePosition(to) && okToCapture(currPos, pieceToBeMoved, pieceToBeCaptured, game)) return true;
+            if(pieceToBeCaptured != null && currPos.equals(to) && okToCapture(currPos, pieceToBeMoved, pieceToBeCaptured, game)) return true;
             if(!game.isSquareEmpty(currPos) && game.getPieceAtPosition(currPos) != pieceToBeMoved){;
                 return false;
             }
@@ -119,5 +118,94 @@ public class LinearPieceHelper {
             return VERTICAL;
         }
         return INVALID;
+    }
+    public static void setVerticalAndHorizontalAttackedSquares(HashSet<Position> attackedSquares, Position piecePosition, Piece[][] gameboard){
+        int i = piecePosition.getVerticalCoord();
+        int j = piecePosition.getHorizontalCoord();
+        Position currPos;
+        // go up
+        do {
+            i++;
+            currPos = new Position(i, j);
+            if(!currPos.isOutsideBoardBounds()){
+                attackedSquares.add(currPos);
+            } else break;
+        }while (gameboard[i][j] == null);
+        i = piecePosition.getVerticalCoord();
+        // go down
+        do {
+            i--;
+            currPos = new Position(i , j);
+            if(!currPos.isOutsideBoardBounds()){
+                attackedSquares.add(currPos);
+            } else break;
+        }while(gameboard[i][j] == null);
+        i = piecePosition.getVerticalCoord();
+        // go right
+       do {
+           j++;
+           currPos = new Position(i, j);
+           if (!currPos.isOutsideBoardBounds()) {
+               attackedSquares.add(currPos);
+           } else break;
+       }while(gameboard[i][j] == null);
+        j = piecePosition.getHorizontalCoord();
+        // go left
+        do {
+            j--;
+            currPos = new Position(i, j);
+            if(!currPos.isOutsideBoardBounds()){
+                attackedSquares.add(currPos);
+            } else break;
+        }while(gameboard[i][j] == null);
+    }
+    public static void setDiagonalAttackedSquares(HashSet<Position> attackedSquares, Position piecePosition, Piece[][] gameboard){
+        int i = piecePosition.getVerticalCoord();
+        int j = piecePosition.getHorizontalCoord();
+        Position currPos;
+        // up left
+        do {
+            i++;
+            j--;
+            currPos = new Position(i, j);
+            if(!currPos.isOutsideBoardBounds()){
+                attackedSquares.add(currPos);
+            } else break;
+        }while (gameboard[i][j] == null);
+        i = piecePosition.getVerticalCoord();
+        j = piecePosition.getHorizontalCoord();
+        // up right
+        do {
+            i++;
+            j++;
+            currPos = new Position(i, j);
+            if(!currPos.isOutsideBoardBounds()){
+                attackedSquares.add(currPos);
+            } else break;
+        }while (gameboard[i][j] == null);
+
+        i = piecePosition.getVerticalCoord();
+        j = piecePosition.getHorizontalCoord();
+        // down left
+        do {
+            i--;
+            j--;
+            currPos = new Position(i, j);
+            if(!currPos.isOutsideBoardBounds()){
+                attackedSquares.add(currPos);
+            } else break;
+        }while (gameboard[i][j] == null);
+
+        i = piecePosition.getVerticalCoord();
+        j = piecePosition.getHorizontalCoord();
+        // down right
+        do {
+            i--;
+            j++;
+            currPos = new Position(i, j);
+            if(!currPos.isOutsideBoardBounds()){
+                attackedSquares.add(currPos);
+            } else break;
+        }while (gameboard[i][j] == null);
     }
 }

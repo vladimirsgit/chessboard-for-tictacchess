@@ -2,7 +2,6 @@ package utils;
 
 import chess.Game;
 import chess.Position;
-import chess.pieces.Piece;
 
 public class KnightTestHelper {
     private static final Position center = new Position(4, 4);

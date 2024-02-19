@@ -47,10 +47,6 @@ public abstract class Piece {
         gameBoard[from.getVerticalCoord()][from.getHorizontalCoord()] = null;
     }
 
-    public boolean isNotInsideChessboard(Position from, Position to){
-        return from.getVerticalCoord() < 1|| from.getVerticalCoord() > 8 || from.getHorizontalCoord() < 1 || from.getHorizontalCoord() > 8
-                || to.getVerticalCoord() < 1 || to.getVerticalCoord() > 8 || to.getHorizontalCoord() < 1 || to.getHorizontalCoord() > 8;
-    }
 
     public static boolean isDifferentColorForCapturing(Piece piece1, Piece piece2){
         return !Objects.equals(piece1.getColor(), piece2.getColor());

@@ -10,22 +10,8 @@ public class Main {
 
         game.printGameBoard();
 
-        Position from = new Position(7, 1);
-        Position to = new Position(5, 1);
-
-        Piece piece = game.getPieceAtPosition(from);
-
-        piece.move(from, to, game);
-
-        game.printGameBoard();
-
-
-        from = new Position(5, 1);
-        to = new Position(4, 1);
-        piece = game.getPieceAtPosition(from);
-        piece.move(from, to, game);
-        
-        game.printGameBoard();
+        game.setAttackedSquares();
+        game.printAttackedSquares();
 
 
     }

@@ -17,7 +17,7 @@ public class Pawn extends Piece{
     @Override
     public void validateMove(Position from, Position to, Game game) {
         //if its not inside the chess board, NOT VALID
-        if(isNotInsideChessboard(from, to)){
+        if(from.isOutsideBoardBounds() || to.isOutsideBoardBounds()){
             throw new OutOfBoardBoundsException("The position/positions are out of the boards' bounds");
         }
         //if its trying to move backwards, return false

@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.Objects;
+
 public class Position {
     private int verticalCoord;
     private int horizontalCoord;
@@ -24,8 +26,19 @@ public class Position {
     public void setHorizontalCoord(int horizontalCoord) {
         this.horizontalCoord = horizontalCoord;
     }
+    public boolean isOutsideBoardBounds(){
+        return verticalCoord > 8 || verticalCoord < 1 || horizontalCoord > 8 || horizontalCoord < 1;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return verticalCoord == position.verticalCoord && horizontalCoord == position.horizontalCoord;
+    }
 
-    public boolean isSamePosition(Position to){
-        return to.horizontalCoord == this.horizontalCoord && to.verticalCoord == this.verticalCoord;
+    @Override
+    public int hashCode() {
+        return Objects.hash(verticalCoord, horizontalCoord);
     }
 }

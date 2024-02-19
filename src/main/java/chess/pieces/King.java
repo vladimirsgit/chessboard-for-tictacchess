@@ -12,5 +12,6 @@ public class King extends Piece{
 
     @Override
     public void validateMove(Position from, Position to, Game game) {
+
     }
 }

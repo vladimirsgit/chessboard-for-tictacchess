@@ -25,11 +25,11 @@ public class PawnTest {
 
     @ParameterizedTest
     @CsvSource({
-            "2, 1, 3, 1", //from (2, 1) to (3, 1) - one square white
-            "2, 1, 4, 1",  // from (2, 1) to (4, 1) - two squares white
+            "7, 1, 6, 1", //from (7, 1) to (6, 1) - one square white
+            "7, 1, 5, 1",  // from (7, 1) to (5, 1) - two squares white
 
-            "7, 1, 6, 1", //from (7, 1) to (6, 1) - one square black
-            "7, 1, 5, 1"  // from (7, 1) to (5, 1) - two squares black
+            "2, 1, 3, 1", //from (2, 1) to (3, 1) - one square black
+            "2, 1, 4, 1"  // from (2, 1) to (4, 1) - two squares black
     })
     public void testValidMovesFromStartPosition(int fromVerticalCoord, int fromHorizontalCoord, int toVerticalCoord, int toHorizontalCoord){
         //the left most white pawn
@@ -45,15 +45,15 @@ public class PawnTest {
 
     @ParameterizedTest
     @CsvSource({
-            "2, 1, 5, 1", //from (2, 1) to (5, 1) - three squares white
-            "2, 1, 3, 2", // from (2, 1) to (3, 2) - diag with no capture white
-            "2, 1, 5, 3", // from (2, 1) to (5, 3) - 3 up, 2 right white
-            "2, 1, 2, 2", // from (2, 1) to (2, 2) - on top on the same colored right pawn white
+            "2, 1, 5, 1", //from (2, 1) to (5, 1) - three squares black
+            "2, 1, 3, 2", // from (2, 1) to (3, 2) - diag with no capture black
+            "2, 1, 5, 3", // from (2, 1) to (5, 3) - 3 up, 2 right black
+            "2, 1, 2, 2", // from (2, 1) to (2, 2) - on top of the same colored right pawn black
 
-            "7, 1, 4, 1", //from (2, 1) to (5, 1) - three squares black
-            "7, 1, 6, 2", // from (2, 1) to (2, 1) - diag with no capture black
-            "7, 1, 4, 3", // from (2, 1) to (5, 2) - 3 up, 2 left black
-            "7, 1, 7, 2"  // from (2, 1) to (2, 2) - on top on the same colored right pawn black
+            "7, 1, 4, 1", //from (2, 1) to (5, 1) - three squares white
+            "7, 1, 6, 2", // from (2, 1) to (2, 1) - diag with no capture white
+            "7, 1, 4, 3", // from (2, 1) to (5, 2) - 3 up, 2 left white
+            "7, 1, 7, 2"  // from (2, 1) to (2, 2) - on top of the same colored right pawn white
     })
     public void testTryingInvalidMovesFromStartPosition(int fromVerticalCoord, int fromHorizontalCoord, int toVerticalCoord, int toHorizontalCoord){
         Position from = new Position(fromVerticalCoord, fromHorizontalCoord);
@@ -77,8 +77,8 @@ public class PawnTest {
     }
     @ParameterizedTest
     @CsvSource({
-            "2, 1, 1, 1", // from (2, 1) to (1, 1) - backward white
-            "7, 1, 8, 1"  // from (7, 1) to (8 ,1) - backward black
+            "2, 1, 1, 1", // from (2, 1) to (1, 1) - backward black
+            "7, 1, 8, 1"  // from (7, 1) to (8 ,1) - backward white
     })
     public void testBackwardMovementFromStartPosition(int fromVerticalCoord, int fromHorizontalCoord, int toVerticalCoord, int toHorizontalCoord){
         Position from = new Position(fromVerticalCoord, fromHorizontalCoord);
