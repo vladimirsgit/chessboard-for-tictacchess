@@ -3,7 +3,7 @@ package utils;
 import chess.Game;
 import chess.Position;
 
-public class KnightTestHelper {
+public class KnightTestUtils {
     private static final Position center = new Position(4, 4);
     private static final Position margin = new Position(4, 1);
     public static void setUpKnightForMoving(Game game){

@@ -52,6 +52,7 @@ public abstract class Piece {
         }
         gameBoard[to.getVerticalCoord()][to.getHorizontalCoord()] = currPositionPiece;
         gameBoard[from.getVerticalCoord()][from.getHorizontalCoord()] = null;
+        game.setAttackedSquares();
     }
 
 

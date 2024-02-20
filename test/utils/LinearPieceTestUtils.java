@@ -15,7 +15,7 @@ public class LinearPieceTestUtils {
         game.movePieceAtCertainPosition(from, center);
     }
     public static void setUpQueen(Game game){
-        Position from = new Position(8, 5);
+        Position from = new Position(8, 4);
         game.movePieceAtCertainPosition(from, center);
     }
 }

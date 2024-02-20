@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import utils.KnightTestHelper;
+import utils.KnightTestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,7 +33,7 @@ public class KnightTest {
             "4, 4, 3, 2", // from (4, 4) to (3, 2) - left and down
     })
     public void testValidMoves(int fromVerticalCoord, int fromHorizontalCoord, int toVerticalCoord, int toHorizontalCoord){
-        KnightTestHelper.setUpKnightForMoving(game);
+        KnightTestUtils.setUpKnightForMoving(game);
         Position from = new Position(fromVerticalCoord, fromHorizontalCoord);
         Position to = new Position(toVerticalCoord, toHorizontalCoord);
         Piece knight = game.getPieceAtPosition(from);
@@ -44,7 +44,7 @@ public class KnightTest {
     }
     @Test
     public void testOutOfBoardBoundsMove(){
-        KnightTestHelper.setUpKnightForFailing(game);
+        KnightTestUtils.setUpKnightForFailing(game);
 
         Position from = new Position(4, 1);
         Position to = new Position(4, 0);

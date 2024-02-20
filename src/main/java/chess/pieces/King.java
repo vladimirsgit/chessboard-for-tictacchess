@@ -23,6 +23,10 @@ public class King extends Piece{
             this.canCastle = false;
             return;
         }
+        if(KingHelper.isCastleMove(this.canCastle, from, to, game, this)){
+            this.canCastle = false;
+            return;
+        }
         throw new InvalidMoveException("Invalid move.");
     }
 

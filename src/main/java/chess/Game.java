@@ -67,11 +67,11 @@ public class Game {
         this.gameBoard[1][3] = this.gameBoard[1][6] = new Bishop(Piece.WHITE, "B");
         this.gameBoard[8][3] = this.gameBoard[8][6] = new Bishop(Piece.BLACK, "b");
         //kings
-        this.gameBoard[1][4] = new King(Piece.WHITE, "K");
-        this.gameBoard[8][4] = new King(Piece.BLACK, "k");
+        this.gameBoard[1][5] = new King(Piece.WHITE, "K");
+        this.gameBoard[8][5] = new King(Piece.BLACK, "k");
         //queens
-        this.gameBoard[1][5] = new Queen(Piece.WHITE, "Q");
-        this.gameBoard[8][5] = new Queen(Piece.BLACK, "q");
+        this.gameBoard[1][4] = new Queen(Piece.WHITE, "Q");
+        this.gameBoard[8][4] = new Queen(Piece.BLACK, "q");
     }
 
     public void printGameBoard(){
@@ -157,6 +157,7 @@ public class Game {
             oppColor = Piece.BLACK;
         }
         HashSet<String> hashSet = attackedSquares.get(position);
-        return hashSet.contains(oppColor);
+        System.out.println(hashSet);
+        return hashSet != null && hashSet.contains(oppColor);
     }
 }
