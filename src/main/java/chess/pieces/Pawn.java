@@ -24,15 +24,8 @@ public class Pawn extends Piece{
         if(PawnHelper.triesToMoveBackwards(from, to, game)){
             throw new BackwardsPawnMoveException("You cannot move the pawn backwards!");
         }
-        if(isForwardMove(from, to, game)){
-            return;
-        }
-        if(isCapture(from, to, game)){
-            return;
-        }
-        if(isEnPassant(from, to, game)){
-            return;
-        }
+        if(isForwardMove(from, to, game) || isCapture(from, to, game) || isEnPassant(from, to, game)) return;
+
         throw new InvalidMoveException("Invalid move.");
     }
     /**

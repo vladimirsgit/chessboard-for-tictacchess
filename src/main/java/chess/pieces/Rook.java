@@ -7,7 +7,7 @@ import chess.exceptions.OutOfBoardBoundsException;
 import chess.pieces.helpers.LinearPieceHelper;
 
 public class Rook extends Piece{
-    private boolean hasMoved = false;
+    private boolean canCastle = true;
     public Rook(String color, String symbol){
         super(color, symbol);
     }
@@ -19,9 +19,13 @@ public class Rook extends Piece{
             throw new OutOfBoardBoundsException("The position/positions are out of the boards' bounds");
         }
         if(LinearPieceHelper.makeVerticalOrHorizontalMoveOrCapture(from, to, game)){
-            this.hasMoved = true;
+            this.canCastle = false;
             return;
         }
         throw new InvalidMoveException("Invalid move.");
+    }
+
+    public boolean canCastle() {
+        return canCastle;
     }
 }

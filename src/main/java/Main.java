@@ -8,9 +8,11 @@ public class Main {
 
         Game game = new Game();
 
-        game.printGameBoard();
 
+
+        game.movePieceAtCertainPosition(new Position(2, 1), new Position(2, 2));
         game.setAttackedSquares();
+        game.printGameBoard();
         game.printAttackedSquares();
 
 

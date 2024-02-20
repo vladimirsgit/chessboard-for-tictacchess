@@ -25,11 +25,11 @@ public class PawnTest {
 
     @ParameterizedTest
     @CsvSource({
-            "7, 1, 6, 1", //from (7, 1) to (6, 1) - one square white
-            "7, 1, 5, 1",  // from (7, 1) to (5, 1) - two squares white
+            "7, 1, 6, 1", //from (7, 1) to (6, 1) - one square black
+            "7, 1, 5, 1",  // from (7, 1) to (5, 1) - two squares black
 
-            "2, 1, 3, 1", //from (2, 1) to (3, 1) - one square black
-            "2, 1, 4, 1"  // from (2, 1) to (4, 1) - two squares black
+            "2, 1, 3, 1", //from (2, 1) to (3, 1) - one square white
+            "2, 1, 4, 1"  // from (2, 1) to (4, 1) - two squares white
     })
     public void testValidMovesFromStartPosition(int fromVerticalCoord, int fromHorizontalCoord, int toVerticalCoord, int toHorizontalCoord){
         //the left most white pawn
@@ -38,7 +38,7 @@ public class PawnTest {
         Piece pawn = game.getPieceAtPosition(from);
 
         pawn.move(from, to, game);
-
+        game.printGameBoard();
         assertNull(game.getPieceAtPosition(from));
         assertEquals(game.getPieceAtPosition(to), pawn);
     }

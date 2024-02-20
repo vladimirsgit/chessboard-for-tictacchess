@@ -37,7 +37,6 @@ public class RookTest {
         rook.move(from, to, game);
 
         assertEquals(game.getPieceAtPosition(to), rook);
-        game.printGameBoard();
     }
 
     @ParameterizedTest

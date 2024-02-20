@@ -29,7 +29,14 @@ public abstract class Piece {
     }
     public abstract void validateMove(Position from, Position to, Game game);
     public final void move(Position from, Position to, Game game){
-        if (game.getPieceAtPosition(to) instanceof King) return; //nothing can capture the king
+        if (game.getPieceAtPosition(to) instanceof King) {
+            System.out.println("Cannot capture king.");
+            return;
+        }
+        if (from.equals(to)){
+            System.out.println("From position cannot be target position.");
+            return;
+        }
         try{
             validateMove(from, to, game);
             game.setEnPassantCandidate(null);

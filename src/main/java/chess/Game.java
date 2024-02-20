@@ -1,11 +1,12 @@
 package chess;
 
 import chess.pieces.*;
+import chess.pieces.helpers.KingHelper;
 import chess.pieces.helpers.KnightHelper;
 import chess.pieces.helpers.LinearPieceHelper;
 import chess.pieces.helpers.PawnHelper;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class Game {
     private Piece[][] gameBoard = new Piece[10][10];
     private ArrayList<FullMove> fullMoves = new ArrayList<>();
     private Piece enPassantCandidate = null;
-    private HashSet<Position> attackedSquares = new HashSet<>();
+    private HashMap<Position, HashSet<String>> attackedSquares = new HashMap<>();
 
     public Game(){
         initializePawns();
@@ -45,28 +46,32 @@ public class Game {
         this.enPassantCandidate = enPassantCandidate;
     }
 
+    public HashMap<Position, HashSet<String>> getAttackedSquares() {
+        return attackedSquares;
+    }
+
     public void initializePawns(){
         for(int horizontal = 1; horizontal < 9; horizontal++){
-            this.gameBoard[2][horizontal] = new Pawn(Piece.BLACK, "p");
-            this.gameBoard[7][horizontal] = new Pawn(Piece.WHITE, "P");
+            this.gameBoard[2][horizontal] = new Pawn(Piece.WHITE, "P");
+            this.gameBoard[7][horizontal] = new Pawn(Piece.BLACK, "p");
         }
     }
     public void initializeRestOfPieces(){
         //rooks
-        this.gameBoard[1][1] = this.gameBoard[1][8] = new Rook(Piece.BLACK, "r");
-        this.gameBoard[8][1] = this.gameBoard[8][8] = new Rook(Piece.WHITE, "R");
+        this.gameBoard[1][1] = this.gameBoard[1][8] = new Rook(Piece.WHITE, "R");
+        this.gameBoard[8][1] = this.gameBoard[8][8] = new Rook(Piece.BLACK, "r");
         //knights
-        this.gameBoard[1][2] = this.gameBoard[1][7] = new Knight(Piece.BLACK, "n");
-        this.gameBoard[8][2] = this.gameBoard[8][7] = new Knight(Piece.WHITE, "N");
+        this.gameBoard[1][2] = this.gameBoard[1][7] = new Knight(Piece.WHITE, "N");
+        this.gameBoard[8][2] = this.gameBoard[8][7] = new Knight(Piece.BLACK, "n");
         //bishops
-        this.gameBoard[1][3] = this.gameBoard[1][6] = new Bishop(Piece.BLACK, "b");
-        this.gameBoard[8][3] = this.gameBoard[8][6] = new Bishop(Piece.WHITE, "B");
+        this.gameBoard[1][3] = this.gameBoard[1][6] = new Bishop(Piece.WHITE, "B");
+        this.gameBoard[8][3] = this.gameBoard[8][6] = new Bishop(Piece.BLACK, "b");
         //kings
-        this.gameBoard[1][4] = new King(Piece.BLACK, "k");
-        this.gameBoard[8][4] = new King(Piece.WHITE, "K");
+        this.gameBoard[1][4] = new King(Piece.WHITE, "K");
+        this.gameBoard[8][4] = new King(Piece.BLACK, "k");
         //queens
-        this.gameBoard[1][5] = new Queen(Piece.BLACK, "q");
-        this.gameBoard[8][5] = new Queen(Piece.WHITE, "Q");
+        this.gameBoard[1][5] = new Queen(Piece.WHITE, "Q");
+        this.gameBoard[8][5] = new Queen(Piece.BLACK, "q");
     }
 
     public void printGameBoard(){
@@ -125,23 +130,33 @@ public class Game {
                 if(piece instanceof Pawn){
                     PawnHelper.setPawnAttackedSquares(attackedSquares, new Position(i, j), piece);
                 } else if(piece instanceof Rook){
-                    LinearPieceHelper.setVerticalAndHorizontalAttackedSquares(attackedSquares, new Position(i, j), gameBoard);
+                    LinearPieceHelper.setVerticalAndHorizontalAttackedSquares(attackedSquares, new Position(i, j), gameBoard, piece);
                 } else if(piece instanceof Bishop){
-                    LinearPieceHelper.setDiagonalAttackedSquares(attackedSquares, new Position(i, j), gameBoard);
+                    LinearPieceHelper.setDiagonalAttackedSquares(attackedSquares, new Position(i, j), gameBoard, piece);
                 } else if(piece instanceof Queen){
-                    LinearPieceHelper.setVerticalAndHorizontalAttackedSquares(attackedSquares, new Position(i, j), gameBoard);
-                    LinearPieceHelper.setDiagonalAttackedSquares(attackedSquares, new Position(i, j), gameBoard);
+                    LinearPieceHelper.setVerticalAndHorizontalAttackedSquares(attackedSquares, new Position(i, j), gameBoard, piece);
+                    LinearPieceHelper.setDiagonalAttackedSquares(attackedSquares, new Position(i, j), gameBoard, piece);
                 } else if(piece instanceof Knight){
-                    KnightHelper.setKnightAttackedSquares(attackedSquares, new Position(i, j), gameBoard);
+                    KnightHelper.setKnightAttackedSquares(attackedSquares, new Position(i, j), gameBoard, piece);
+                } else if(piece instanceof King){
+                    KingHelper.setKingAttackedSquares(attackedSquares, new Position(i, j), piece);
                 }
             }
         }
     }
 
     public void printAttackedSquares(){
-        for(Position pos : attackedSquares){
-            System.out.print(pos.getVerticalCoord() + " " + pos.getHorizontalCoord() + "\n");
-        }
+        attackedSquares.forEach((position, colors) -> {
+            System.out.println(position.getVerticalCoord() + ", " + position.getHorizontalCoord() + " " + colors);
+        });
     }
 
+    public boolean isSquareAttackedByOppColor(Position position, String color){
+        String oppColor = Piece.WHITE;
+        if(color.equals(Piece.WHITE)){
+            oppColor = Piece.BLACK;
+        }
+        HashSet<String> hashSet = attackedSquares.get(position);
+        return hashSet.contains(oppColor);
+    }
 }

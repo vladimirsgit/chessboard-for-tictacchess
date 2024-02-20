@@ -4,6 +4,7 @@ import chess.Game;
 import chess.Position;
 import chess.pieces.Piece;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class PawnHelper {
@@ -22,8 +23,8 @@ public class PawnHelper {
         int fromVerticalCoord = from.getVerticalCoord();
         int toVerticalCoord = to.getVerticalCoord();
 
-        return (Piece.WHITE.equals(color) && fromVerticalCoord < toVerticalCoord)
-                || (Piece.BLACK.equals(color) && fromVerticalCoord > toVerticalCoord);
+        return (Piece.WHITE.equals(color) && fromVerticalCoord > toVerticalCoord)
+                || (Piece.BLACK.equals(color) && fromVerticalCoord < toVerticalCoord);
 
     }
     /**
@@ -36,7 +37,7 @@ public class PawnHelper {
     //checking if its the first move, will help to see if two squares move is valid
     public static boolean isFirstMove(Position from, Piece piece) {
         String color = piece.getColor();
-        return (from.getVerticalCoord() == 7 && Piece.WHITE.equals(color)) || (from.getVerticalCoord() == 2
+        return (from.getVerticalCoord() == 2 && Piece.WHITE.equals(color)) || (from.getVerticalCoord() == 7
                 && Piece.BLACK.equals(color));
     }
 
@@ -70,11 +71,11 @@ public class PawnHelper {
      * @return It returns true if the wanted square and the one before are free
      */
     private static boolean isPathFreeForTwoSquaresMove(Position from, Position to, Game game) {
-        Position intermediatePosition = new Position(from.getVerticalCoord() - 1, to.getHorizontalCoord());
+        Position intermediatePosition = new Position(from.getVerticalCoord() + 1, to.getHorizontalCoord());
         Piece piece = game.getPieceAtPosition(from);
         String pieceColor = piece.getColor();
         if(pieceColor.equals(Piece.BLACK)){
-            intermediatePosition = new Position(from.getVerticalCoord() + 1, to.getHorizontalCoord());
+            intermediatePosition = new Position(from.getVerticalCoord() - 1, to.getHorizontalCoord());
         }
         return game.isSquareEmpty(to) && game.isSquareEmpty(intermediatePosition);
     }
@@ -117,21 +118,29 @@ public class PawnHelper {
         return enPassant;
     }
 
-    public static void setPawnAttackedSquares(HashSet<Position> attackedSquares, Position pawnPosition, Piece pawn){
+    public static void setPawnAttackedSquares(HashMap<Position, HashSet<String>> attackedSquares, Position pawnPosition, Piece pawn){
         Position leftAttackedSquare, rightAttackedSquare;
         if(pawn.getColor().equals(Piece.WHITE)){
-            leftAttackedSquare = new Position(pawnPosition.getVerticalCoord() - 1, pawnPosition.getHorizontalCoord() - 1);
-            rightAttackedSquare = new Position(pawnPosition.getVerticalCoord() - 1, pawnPosition.getHorizontalCoord() + 1);
+            leftAttackedSquare = new Position(pawnPosition.getVerticalCoord() + 1, pawnPosition.getHorizontalCoord() - 1);
+            rightAttackedSquare = new Position(pawnPosition.getVerticalCoord() + 1, pawnPosition.getHorizontalCoord() + 1);
         } else {
-            leftAttackedSquare = new Position(pawnPosition.getVerticalCoord() + 1, pawnPosition.getHorizontalCoord() + 1);
-            rightAttackedSquare = new Position(pawnPosition.getVerticalCoord() + 1, pawnPosition.getHorizontalCoord() - 1);
+            leftAttackedSquare = new Position(pawnPosition.getVerticalCoord() - 1, pawnPosition.getHorizontalCoord() + 1);
+            rightAttackedSquare = new Position(pawnPosition.getVerticalCoord() - 1, pawnPosition.getHorizontalCoord() - 1);
         }
         if(!leftAttackedSquare.isOutsideBoardBounds()){
-            attackedSquares.add(leftAttackedSquare);
+            addSquare(leftAttackedSquare, attackedSquares, pawn);
         }
         if(!rightAttackedSquare.isOutsideBoardBounds()){
-            attackedSquares.add(rightAttackedSquare);
+            addSquare(rightAttackedSquare, attackedSquares, pawn);
         }
     }
-
+    private static void addSquare(Position pos, HashMap<Position, HashSet<String>> attackedSquares, Piece pawn){
+        if(attackedSquares.containsKey(pos)){
+            attackedSquares.get(pos).add(pawn.getColor());
+        } else {
+            HashSet<String> colors = new HashSet<>();
+            colors.add(pawn.getColor());
+            attackedSquares.put(pos, colors);
+        }
+    }
 }

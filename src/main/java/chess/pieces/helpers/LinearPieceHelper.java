@@ -4,6 +4,7 @@ import chess.Game;
 import chess.Position;
 import chess.pieces.Piece;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class LinearPieceHelper {
@@ -119,7 +120,7 @@ public class LinearPieceHelper {
         }
         return INVALID;
     }
-    public static void setVerticalAndHorizontalAttackedSquares(HashSet<Position> attackedSquares, Position piecePosition, Piece[][] gameboard){
+    public static void setVerticalAndHorizontalAttackedSquares(HashMap<Position, HashSet<String>> attackedSquares, Position piecePosition, Piece[][] gameboard, Piece piece){
         int i = piecePosition.getVerticalCoord();
         int j = piecePosition.getHorizontalCoord();
         Position currPos;
@@ -128,7 +129,7 @@ public class LinearPieceHelper {
             i++;
             currPos = new Position(i, j);
             if(!currPos.isOutsideBoardBounds()){
-                attackedSquares.add(currPos);
+                addSquare(currPos, attackedSquares, piece);
             } else break;
         }while (gameboard[i][j] == null);
         i = piecePosition.getVerticalCoord();
@@ -137,7 +138,7 @@ public class LinearPieceHelper {
             i--;
             currPos = new Position(i , j);
             if(!currPos.isOutsideBoardBounds()){
-                attackedSquares.add(currPos);
+                addSquare(currPos, attackedSquares, piece);
             } else break;
         }while(gameboard[i][j] == null);
         i = piecePosition.getVerticalCoord();
@@ -146,7 +147,7 @@ public class LinearPieceHelper {
            j++;
            currPos = new Position(i, j);
            if (!currPos.isOutsideBoardBounds()) {
-               attackedSquares.add(currPos);
+               addSquare(currPos, attackedSquares, piece);
            } else break;
        }while(gameboard[i][j] == null);
         j = piecePosition.getHorizontalCoord();
@@ -155,11 +156,11 @@ public class LinearPieceHelper {
             j--;
             currPos = new Position(i, j);
             if(!currPos.isOutsideBoardBounds()){
-                attackedSquares.add(currPos);
+                addSquare(currPos, attackedSquares, piece);
             } else break;
         }while(gameboard[i][j] == null);
     }
-    public static void setDiagonalAttackedSquares(HashSet<Position> attackedSquares, Position piecePosition, Piece[][] gameboard){
+    public static void setDiagonalAttackedSquares(HashMap<Position, HashSet<String>> attackedSquares, Position piecePosition, Piece[][] gameboard, Piece piece){
         int i = piecePosition.getVerticalCoord();
         int j = piecePosition.getHorizontalCoord();
         Position currPos;
@@ -169,7 +170,7 @@ public class LinearPieceHelper {
             j--;
             currPos = new Position(i, j);
             if(!currPos.isOutsideBoardBounds()){
-                attackedSquares.add(currPos);
+                addSquare(currPos, attackedSquares, piece);
             } else break;
         }while (gameboard[i][j] == null);
         i = piecePosition.getVerticalCoord();
@@ -180,7 +181,7 @@ public class LinearPieceHelper {
             j++;
             currPos = new Position(i, j);
             if(!currPos.isOutsideBoardBounds()){
-                attackedSquares.add(currPos);
+                addSquare(currPos, attackedSquares, piece);
             } else break;
         }while (gameboard[i][j] == null);
 
@@ -192,7 +193,7 @@ public class LinearPieceHelper {
             j--;
             currPos = new Position(i, j);
             if(!currPos.isOutsideBoardBounds()){
-                attackedSquares.add(currPos);
+                addSquare(currPos, attackedSquares, piece);
             } else break;
         }while (gameboard[i][j] == null);
 
@@ -204,8 +205,17 @@ public class LinearPieceHelper {
             j++;
             currPos = new Position(i, j);
             if(!currPos.isOutsideBoardBounds()){
-                attackedSquares.add(currPos);
+                addSquare(currPos, attackedSquares, piece);
             } else break;
         }while (gameboard[i][j] == null);
+    }
+    private static void addSquare(Position position, HashMap<Position, HashSet<String>> attackedSquares, Piece piece){
+        if(attackedSquares.containsKey(position)){
+            attackedSquares.get(position).add(piece.getColor());
+        } else {
+            HashSet<String> colors = new HashSet<>();
+            colors.add(piece.getColor());
+            attackedSquares.put(position, colors);
+        }
     }
 }
